@@ -1,0 +1,78 @@
+name: Static Analyze .NET EXE
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "samples/**"
+
+jobs:
+  analyze:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install analysis tools
+        shell: pwsh
+        run: |
+          dotnet tool install --global ilspycmd
+          choco install sysinternals -y
+
+      - name: Find executable
+        id: findexe
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -Path samples -Filter *.exe -Recurse | Select-Object -First 1
+          if (-not $exe) { throw "No EXE found under samples/" }
+          "exe=$($exe.FullName)" >> $env:GITHUB_OUTPUT
+          Write-Host "Analyzing $($exe.FullName)"
+
+      - name: Collect metadata and hashes
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path analysis | Out-Null
+          $exe = "${{ steps.findexe.outputs.exe }}"
+          Get-FileHash $exe -Algorithm SHA256 | Format-List | Out-File analysis/hash.txt
+          Get-Item $exe | Format-List * | Out-File analysis/file-metadata.txt
+          & sigcheck.exe -nobanner -a -h -i $exe | Out-File analysis/sigcheck.txt
+
+      - name: Extract .NET type/method inventory
+        shell: pwsh
+        run: |
+          $exe = "${{ steps.findexe.outputs.exe }}"
+          ilspycmd -l c $exe | Out-File analysis/classes.txt
+          ilspycmd -l m $exe | Out-File analysis/methods.txt
+
+      - name: Produce decompiler output for review
+        shell: pwsh
+        run: |
+          $exe = "${{ steps.findexe.outputs.exe }}"
+          New-Item -ItemType Directory -Force -Path analysis/decompiled | Out-Null
+          ilspycmd -p -o analysis/decompiled $exe
+          # Remove obvious license-bypass/keygen implementation files from the artifact.
+          Get-ChildItem analysis/decompiled -Recurse -File |
+            Where-Object { $_.Name -match '(keygen|serial|license|patch|crack)' } |
+            Remove-Item -Force -ErrorAction SilentlyContinue
+
+      - name: Grep security-relevant APIs
+        shell: pwsh
+        run: |
+          $patterns = @(
+            'Microsoft.Win32','Registry','System.IO','File.','Directory.',
+            'Process.Start','System.Net','HttpClient','WebClient','Socket',
+            'DllImport','Assembly.Load','AssemblyResolve','ResourceResolve',
+            'Cryptography','RSA','AES','MoveFileEx','CreateProcess'
+          )
+          Get-ChildItem analysis/decompiled -Recurse -File -Include *.cs |
+            Select-String -Pattern $patterns -SimpleMatch |
+            Out-File analysis/security-relevant.txt
+
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-static-analysis
+          path: analysis/
+          retention-days: 7
