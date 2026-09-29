@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - "*.exe"
       - "samples/**"
+      - ".github/workflows/static-analyze.yml"
 
 jobs:
   analyze:
@@ -25,8 +27,10 @@ jobs:
         id: findexe
         shell: pwsh
         run: |
-          $exe = Get-ChildItem -Path samples -Filter *.exe -Recurse | Select-Object -First 1
-          if (-not $exe) { throw "No EXE found under samples/" }
+          $exe = Get-ChildItem -Path . -Filter *.exe -Recurse |
+            Where-Object { $_.FullName -notmatch '\\.git\\' } |
+            Select-Object -First 1
+          if (-not $exe) { throw "No EXE found in repository" }
           "exe=$($exe.FullName)" >> $env:GITHUB_OUTPUT
           Write-Host "Analyzing $($exe.FullName)"
 
@@ -39,25 +43,24 @@ jobs:
           Get-Item $exe | Format-List * | Out-File analysis/file-metadata.txt
           & sigcheck.exe -nobanner -a -h -i $exe | Out-File analysis/sigcheck.txt
 
-      - name: Extract .NET type/method inventory
+      - name: Extract .NET type and method inventory
         shell: pwsh
         run: |
           $exe = "${{ steps.findexe.outputs.exe }}"
           ilspycmd -l c $exe | Out-File analysis/classes.txt
           ilspycmd -l m $exe | Out-File analysis/methods.txt
 
-      - name: Produce decompiler output for review
+      - name: Decompile for security review
         shell: pwsh
         run: |
           $exe = "${{ steps.findexe.outputs.exe }}"
           New-Item -ItemType Directory -Force -Path analysis/decompiled | Out-Null
           ilspycmd -p -o analysis/decompiled $exe
-          # Remove obvious license-bypass/keygen implementation files from the artifact.
           Get-ChildItem analysis/decompiled -Recurse -File |
             Where-Object { $_.Name -match '(keygen|serial|license|patch|crack)' } |
             Remove-Item -Force -ErrorAction SilentlyContinue
 
-      - name: Grep security-relevant APIs
+      - name: Find security relevant APIs
         shell: pwsh
         run: |
           $patterns = @(
