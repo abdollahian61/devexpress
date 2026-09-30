@@ -1,0 +1,45 @@
+
+PSPath              : Microsoft.PowerShell.Core\FileSystem::D:\a\devexpress\devexpress\DevExpress_Patch_Keygen_v2.5.2.6_By_DFoX.exe
+PSParentPath        : Microsoft.PowerShell.Core\FileSystem::D:\a\devexpress\devexpress
+PSChildName         : DevExpress_Patch_Keygen_v2.5.2.6_By_DFoX.exe
+PSDrive             : D
+PSProvider          : Microsoft.PowerShell.Core\FileSystem
+PSIsContainer       : False
+Mode                : -a---
+ModeWithoutHardLink : -a---
+VersionInfo         : File:             D:\a\devexpress\devexpress\DevExpress_Patch_Keygen_v2.5.2.6_By_DFoX.exe
+                      InternalName:     DevExpress_Patch_Keygen_DFoX.exe
+                      OriginalFilename: DevExpress_Patch_Keygen_DFoX.exe
+                      FileVersion:      2.5.2.6
+                      FileDescription:  DevExpress_Patch_Keygen_DFoX
+                      Product:          DevExpress_Patch_Keygen_DFoX
+                      ProductVersion:   2.5.2.6
+                      Debug:            False
+                      Patched:          False
+                      PreRelease:       False
+                      PrivateBuild:     False
+                      SpecialBuild:     False
+                      Language:         Language Neutral
+                      
+BaseName            : DevExpress_Patch_Keygen_v2.5.2.6_By_DFoX
+ResolvedTarget      : D:\a\devexpress\devexpress\DevExpress_Patch_Keygen_v2.5.2.6_By_DFoX.exe
+Target              : 
+LinkType            : 
+Name                : DevExpress_Patch_Keygen_v2.5.2.6_By_DFoX.exe
+Length              : 322048
+DirectoryName       : D:\a\devexpress\devexpress
+Directory           : D:\a\devexpress\devexpress
+IsReadOnly          : False
+Exists              : True
+FullName            : D:\a\devexpress\devexpress\DevExpress_Patch_Keygen_v2.5.2.6_By_DFoX.exe
+Extension           : .exe
+CreationTime        : 9/30/2026 8:17:43 AM
+CreationTimeUtc     : 9/30/2026 8:17:43 AM
+LastAccessTime      : 9/30/2026 8:17:43 AM
+LastAccessTimeUtc   : 9/30/2026 8:17:43 AM
+LastWriteTime       : 9/30/2026 8:17:43 AM
+LastWriteTimeUtc    : 9/30/2026 8:17:43 AM
+LinkTarget          : 
+UnixFileMode        : -1
+Attributes          : Archive
+

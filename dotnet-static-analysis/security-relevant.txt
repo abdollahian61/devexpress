@@ -1,0 +1,32 @@
+
+analysis\decompiled\---.cs:7:using System.IO;
+analysis\decompiled\---.cs:8:using System.IO.Compression;
+analysis\decompiled\---.cs:14:using System.Security.Cryptography;
+analysis\decompiled\---.cs:1704:			return _000F_200B_200B._0005(_0005) ?? Assembly.Load(_0005);
+analysis\decompiled\---.cs:1722:		AppDomain.CurrentDomain.ResourceResolve += _0005;
+analysis\decompiled\---.cs:3309:				Directory.CreateDirectory(text);
+analysis\decompiled\---.cs:3316:				Directory.CreateDirectory(text);
+analysis\decompiled\---.cs:3327:				if (!File.Exists(text2))
+analysis\decompiled\---.cs:3333:					File.WriteAllBytes(text2, _000F);
+analysis\decompiled\---.cs:3359:				File.Delete(_0005);
+analysis\decompiled\---.cs:3369:				Directory.Delete(directoryName);
+analysis\decompiled\---.cs:3519:						value = Assembly.Load(array);
+analysis\decompiled\---.cs:3535:						value = Assembly.LoadFrom(assemblyFile);
+analysis\decompiled\---.cs:3554:		AppDomain.CurrentDomain.AssemblyResolve += _0005;
+analysis\decompiled\---.cs:3616:	[DllImport("kernel32.dll", EntryPoint = "MoveFileEx")]
+analysis\decompiled\--.cs:7:using System.IO;
+analysis\decompiled\--.cs:12:using System.Security.Cryptography;
+analysis\decompiled\--.cs:25:			return Directory.GetFiles(this._0005, _0005, SearchOption.AllDirectories);
+analysis\decompiled\--.cs:146:			return Directory.GetFiles(this._0005[_0002], _0005, SearchOption.AllDirectories);
+analysis\decompiled\--.cs:166:				if (!Directory.Exists(this._0005))
+analysis\decompiled\--.cs:170:				if (!Directory.Exists(this._0005))
+analysis\decompiled\--.cs:1322:				if (obj is AllowPartiallyTrustedCallersAttribute)
+analysis\decompiled\-.cs:5:using System.IO;
+analysis\decompiled\-.cs:13:using System.Security.Cryptography;
+analysis\decompiled\-.cs:16:using Microsoft.Win32.SafeHandles;
+analysis\decompiled\-.cs:3708:	[DllImport("ncrypt.dll", EntryPoint = "NCryptFreeObject")]
+analysis\decompiled\-.cs:3711:	[DllImport("ncrypt.dll", EntryPoint = "NCryptEncrypt")]
+analysis\decompiled\-.cs:3714:	[DllImport("ncrypt.dll", CharSet = CharSet.Unicode, EntryPoint = "NCryptImportKey")]
+analysis\decompiled\-.cs:3717:	[DllImport("ncrypt.dll", CharSet = CharSet.Unicode, EntryPoint = "NCryptOpenStorageProvider")]
+analysis\decompiled\-.cs:11512:					Type[] types = Assembly.Load(text3).GetTypes();
+
