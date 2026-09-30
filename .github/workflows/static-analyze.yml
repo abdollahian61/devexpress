@@ -41,7 +41,11 @@ jobs:
           $exe = "${{ steps.findexe.outputs.exe }}"
           Get-FileHash $exe -Algorithm SHA256 | Format-List | Out-File analysis/hash.txt
           Get-Item $exe | Format-List * | Out-File analysis/file-metadata.txt
-          & sigcheck.exe -nobanner -a -h -i $exe | Out-File analysis/sigcheck.txt
+          & sigcheck.exe -accepteula -nobanner -a -h -i $exe 2>&1 | Out-File analysis/sigcheck.txt
+          $sigExit = $LASTEXITCODE
+          "Sigcheck exit code: $sigExit" | Add-Content analysis/sigcheck.txt
+          # Sigcheck may return non-zero for signature/trust findings; keep analysis running.
+          $global:LASTEXITCODE = 0
 
       - name: Extract .NET type and method inventory
         shell: pwsh
